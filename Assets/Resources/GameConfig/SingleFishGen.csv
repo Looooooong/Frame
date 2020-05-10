@@ -1,0 +1,2 @@
+id,fishName,roadIndex,isRevert,genTime,isRandom,scale,min_speed,max_speed,hp,coinValue,expValue
+string,string,int,int,int,int,int,int,int,int,int,int
