@@ -4,96 +4,43 @@ using UnityEngine;
 
 public class ShowFPS : MonoBehaviour {
 
+    // 固定的一个时间间隔
+    private float time_delta = 0.5f;
+    // Time.realtimeSinceStartup: 指的是我们当前从启动开始到现在运行的时间，单位(s)
+    private float prev_time = 0.0f; // 上一次统计FPS的时间;
+    private float fps = 0.0f; // 计算出来的FPS的值;
+    private int i_frames = 0; // 累计我们刷新的帧数;
 
-    public enum ServerType
-    {
-        DevelopServer = 0,//开发服务器
-        DemoServer = 1//演示服务器
+    // GUI显示;
+    private GUIStyle style;
+
+    void Awake() {
+        // 假设CPU 100% 工作的状态下FPS 300，
+        // 当你设置了这个以后，他就维持在60FPS左右，不会继续冲高;
+        // -1, 游戏引擎就会不段的刷新我们的画面，有多高，刷多高; 60FPS左右;
+        Application.targetFrameRate = 60;
     }
 
+	// Use this for initialization
+	void Start () {
+        this.prev_time = Time.realtimeSinceStartup;
+        this.style = new GUIStyle();
+        this.style.fontSize = 15;
+        this.style.normal.textColor = new Color(255, 255, 255);
+	}
 
-
-    public ServerType serverType;
-    public bool isShowFrameUpdate = true;//是否显示帧数
-    private float m_LastUpdateShowTime = 0f;    //上一次更新帧率的时间;
-    private float m_UpdateShowDeltaTime = 0.5f;//更新帧率的时间间隔;
-    private int m_FrameUpdate = 0;//帧数;
-    private float m_FPS = 0;
-
-    Ping ping;
-    string serverAddress = "127.0.0.1";
-    float delayTime;
-
-
-    private void Awake()
-    {
-
-        if (serverType == ServerType.DevelopServer)
-        {
-            serverAddress = "192.168.1.160";
-        }
-        else if (serverType == ServerType.DemoServer)
-        {
-            serverAddress = "192.168.1.125";
-        }
+    void OnGUI() {
+        GUI.Label(new Rect(0, Screen.height - 20, 200, 200), "FPS:" + this.fps.ToString("f2"), this.style);
     }
-
-    void Start () {
-        if (isShowFrameUpdate)
-        {
-            m_LastUpdateShowTime = Time.realtimeSinceStartup;
-            SendPing();
-        }
-    }
-	
 	// Update is called once per frame
+    // 每次游戏刷新的时候就会调用;
 	void Update () {
-        if (isShowFrameUpdate)
-        {
-            m_FrameUpdate++;
-            if (Time.realtimeSinceStartup - m_LastUpdateShowTime >= m_UpdateShowDeltaTime)
-            {
-                m_FPS = m_FrameUpdate / (Time.realtimeSinceStartup - m_LastUpdateShowTime);
-                m_FrameUpdate = 0;
-                m_LastUpdateShowTime = Time.realtimeSinceStartup;
-            }
+        this.i_frames ++;
+
+        if (Time.realtimeSinceStartup >= this.prev_time + this.time_delta) {
+            this.fps = ((float)this.i_frames) / (Time.realtimeSinceStartup - this.prev_time);
+            this.prev_time = Time.realtimeSinceStartup;
+            this.i_frames = 0; // 重新累积我们的FPS
         }
-    }
-
-
-
-    void SendPing()
-    {
-        ping = new Ping(serverAddress);
-    }
-
-
-    void OnGUI()
-    {
-        if (isShowFrameUpdate)
-        {
-            //FPS
-            GUIStyle fontStyle = new GUIStyle();
-            fontStyle.normal.background = null;    //设置背景填充  
-            fontStyle.normal.textColor = new Color(1, 0, 0);   //设置字体颜色  
-            fontStyle.fontSize = 40;       //字体大小  
-            GUI.Label(new Rect(Screen.width - 100, 0, 100, 100), "FPS: " + (int)m_FPS);
-
-
-            //Ping
-            GUI.color = Color.red;
-
-            GUI.Label(new Rect(10, 0, 100, 20), "ping: " + delayTime.ToString() + "ms");
-
-            if (null != ping && ping.isDone)
-            {
-                delayTime = ping.time;
-                ping.DestroyPing();
-                ping = null;
-                Invoke("SendPing", 1.0F);//每秒Ping一次
-            }
-
-
-        }
-    }
+	}
 }
