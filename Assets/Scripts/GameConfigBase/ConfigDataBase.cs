@@ -5,17 +5,17 @@ using System;
 using System.Reflection;
 
 
-public class GameConfigDataBase
+public class ConfigDataBase
 {
     protected virtual string getFilePath()
     {
         return "";
     }
 
-    static Dictionary<string, Dictionary<string, GameConfigDataBase>> dataDic = new Dictionary<string, Dictionary<string, GameConfigDataBase>>();
+    static Dictionary<string, Dictionary<string, ConfigDataBase>> dataDic = new Dictionary<string, Dictionary<string, ConfigDataBase>>();
 
 
-    public static T GetConfigData<T>(string key, string fileName = null) where T : GameConfigDataBase
+    public static T GetConfigData<T>(string key, string fileName = null) where T : ConfigDataBase
     {
         Type setT = typeof(T);
         if (fileName == null)
@@ -27,7 +27,7 @@ public class GameConfigDataBase
         {
             ReadConfigData<T>(fileName);
         }
-        Dictionary<string, GameConfigDataBase> objDic = dataDic[fileName];
+        Dictionary<string, ConfigDataBase> objDic = dataDic[fileName];
         Debug.Log("test  (" + key + ")" + objDic.Count);
         if (!objDic.ContainsKey(key))
         {
@@ -36,7 +36,7 @@ public class GameConfigDataBase
         return (T)(objDic[key]);
     }
 
-    public static List<T> GetConfigDatas<T>(string fileName = null) where T : GameConfigDataBase
+    public static List<T> GetConfigDatas<T>(string fileName = null) where T : ConfigDataBase
     {
         List<T> returnList = new List<T>();
         Type setT = typeof(T);
@@ -49,15 +49,15 @@ public class GameConfigDataBase
         {
             ReadConfigData<T>(fileName);
         }
-        Dictionary<string, GameConfigDataBase> objDic = dataDic[fileName];
-        foreach (KeyValuePair<string, GameConfigDataBase> kvp in objDic)
+        Dictionary<string, ConfigDataBase> objDic = dataDic[fileName];
+        foreach (KeyValuePair<string, ConfigDataBase> kvp in objDic)
         {
             returnList.Add((T)(kvp.Value));
         }
         return returnList;
     }
 
-    static void ReadConfigData<T>(string fileName = null) where T : GameConfigDataBase
+    static void ReadConfigData<T>(string fileName = null) where T : ConfigDataBase
     {
         T obj = Activator.CreateInstance<T>();
         if (fileName == null)
@@ -71,7 +71,7 @@ public class GameConfigDataBase
 
         CsvReaderByString csr = new CsvReaderByString(getString);
 
-        Dictionary<string, GameConfigDataBase> objDic = new Dictionary<string, GameConfigDataBase>();
+        Dictionary<string, ConfigDataBase> objDic = new Dictionary<string, ConfigDataBase>();
 
         FieldInfo[] fis = new FieldInfo[csr.ColCount];
         for (int colNum = 1; colNum < csr.ColCount + 1; colNum++)

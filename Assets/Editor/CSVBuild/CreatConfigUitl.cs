@@ -12,7 +12,7 @@ public class CreatConfigUitl
         StreamWriter sw = new StreamWriter(Application.dataPath + writePath + className + ".cs");
 
         sw.WriteLine("using UnityEngine;\nusing System.Collections;\n");
-        sw.WriteLine("public partial class " + className + " : GameConfigDataBase");
+        sw.WriteLine("public partial class " + className + " : ConfigDataBase");
         sw.WriteLine("{");
 
         string filePath = AssetDatabase.GetAssetPath(selectObj);

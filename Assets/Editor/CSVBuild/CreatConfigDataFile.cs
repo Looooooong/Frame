@@ -6,7 +6,7 @@ using UnityEditor;
 public class CreatConfigDataFile : EditorWindow
 {
 
-    static string writePath = "/Scripts/GameConfigs/";
+    static string writePath = "/Scripts/Configs/";
     static Object selectObj;
 
 

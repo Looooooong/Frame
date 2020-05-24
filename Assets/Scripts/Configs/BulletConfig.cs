@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public partial class BulletConfig : GameConfigDataBase
+public partial class BulletConfig : ConfigDataBase
 {
 	public string id;
 	public string bulletName;
