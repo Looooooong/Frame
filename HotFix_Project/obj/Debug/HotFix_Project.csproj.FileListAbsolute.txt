@@ -1,0 +1,6 @@
+C:\UnityProject\InitPacket\HotFix_Project\obj\Debug\HotFix_Project.csprojAssemblyReference.cache
+C:\UnityProject\InitPacket\HotFix_Project\obj\Debug\HotFix_Project.csproj.CoreCompileInputs.cache
+C:\UnityProject\InitPacket\Assets\StreamingAssets\HotFix_Project.dll
+C:\UnityProject\InitPacket\Assets\StreamingAssets\HotFix_Project.pdb
+C:\UnityProject\InitPacket\HotFix_Project\obj\Debug\HotFix_Project.dll
+C:\UnityProject\InitPacket\HotFix_Project\obj\Debug\HotFix_Project.pdb
