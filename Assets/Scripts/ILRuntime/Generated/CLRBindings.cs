@@ -15,20 +15,27 @@ namespace ILRuntime.Runtime.Generated
         public static void Initialize(ILRuntime.Runtime.Enviorment.AppDomain app)
         {
             HotFixILManager_Binding.Register(app);
-            UnityEngine_Debug_Binding.Register(app);
+            System_Collections_Generic_Dictionary_2_Int32_List_1_ILTypeInstance_Binding.Register(app);
+            System_Collections_Generic_List_1_Int32_Binding.Register(app);
+            UnityEngine_Object_Binding.Register(app);
             System_Collections_Generic_List_1_ILTypeInstance_Binding.Register(app);
+            System_Activator_Binding.Register(app);
+            UnityEngine_GameObject_Binding.Register(app);
+            System_Linq_Enumerable_Binding.Register(app);
+            System_Collections_Generic_List_1_List_1_ILTypeInstance_Binding.Register(app);
+            UnityEngine_Transform_Binding.Register(app);
+            UnityEngine_Vector3_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_ILTypeInstance_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_Int32_Binding.Register(app);
             LitJson_JsonMapper_Binding.Register(app);
+            UnityEngine_Debug_Binding.Register(app);
             System_Diagnostics_Stopwatch_Binding.Register(app);
-            UnityEngine_Vector3_Binding.Register(app);
             System_String_Binding.Register(app);
             System_Boolean_Binding.Register(app);
             System_Object_Binding.Register(app);
             UnityEngine_Quaternion_Binding.Register(app);
             UnityEngine_Vector2_Binding.Register(app);
             UnityEngine_Time_Binding.Register(app);
-            UnityEngine_GameObject_Binding.Register(app);
             CoroutineDemo_Binding.Register(app);
             UnityEngine_WaitForSeconds_Binding.Register(app);
             System_NotSupportedException_Binding.Register(app);
@@ -39,7 +46,6 @@ namespace ILRuntime.Runtime.Generated
             System_Action_1_String_Binding.Register(app);
             DelegateDemo_Binding.Register(app);
             System_Int32_Binding.Register(app);
-            System_Collections_Generic_List_1_Int32_Binding.Register(app);
 
             ILRuntime.CLR.TypeSystem.CLRType __clrType = null;
             __clrType = (ILRuntime.CLR.TypeSystem.CLRType)app.GetType (typeof(UnityEngine.Vector3));
