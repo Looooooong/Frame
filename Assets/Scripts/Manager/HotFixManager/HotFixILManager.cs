@@ -5,6 +5,7 @@ using System.Collections;
 using System.IO;
 using System.Reflection;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 //下面这行为了取消使用WWW的警告，Unity2018以后推荐使用UnityWebRequest，处于兼容性考虑Demo依然使用WWW
 #pragma warning disable CS0618
@@ -100,9 +101,9 @@ public class HotFixILManager : MonoBehaviour
 #endif
         //这里做一些ILRuntime的注册
         // 注册重定向函数
-
-
+        
         // 注册委托
+        RegistDelegate();
 
         //初始化CLR绑定
         CLRBindings.Initialize(appdomain);
@@ -119,6 +120,37 @@ public class HotFixILManager : MonoBehaviour
         this.start = new ILStaticMethod(this.appdomain, "HotFix_Project.HotFixInit", "Init", 0);
         this.start.Run();
         //appdomain.Invoke("HotFix_Project.HotFixInit", "Init", null, null);
+
+    }
+    void RegistDelegate()
+    {
+        DelegateManager manager = appdomain.DelegateManager;
+        manager.RegisterMethodDelegate<bool>();
+        manager.RegisterMethodDelegate<byte>();
+        manager.RegisterMethodDelegate<sbyte>();
+        manager.RegisterMethodDelegate<char>();
+        manager.RegisterMethodDelegate<short>();
+        manager.RegisterMethodDelegate<ushort>();
+        manager.RegisterMethodDelegate<int>();
+        manager.RegisterMethodDelegate<uint>();
+        manager.RegisterMethodDelegate<long>();
+        manager.RegisterMethodDelegate<ulong>();
+        manager.RegisterMethodDelegate<float>();
+        manager.RegisterMethodDelegate<double>();
+        manager.RegisterMethodDelegate<string>();
+        manager.RegisterMethodDelegate<object>();
+        manager.RegisterMethodDelegate<Collider>();
+        manager.RegisterMethodDelegate<Collision>();
+        manager.RegisterMethodDelegate<BaseEventData>();
+        manager.RegisterMethodDelegate<PointerEventData>();
+        manager.RegisterMethodDelegate<UnityEngine.Object>();
+        manager.RegisterMethodDelegate<GameObject>();
+
+        appdomain.DelegateManager.RegisterDelegateConvertor<UnityEngine.Events.UnityAction>((action) => {
+            return new UnityEngine.Events.UnityAction(() => {
+                ((System.Action)action)();
+            });
+        });
 
     }
 

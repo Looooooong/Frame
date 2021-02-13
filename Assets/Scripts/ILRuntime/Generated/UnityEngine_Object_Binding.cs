@@ -31,6 +31,9 @@ namespace ILRuntime.Runtime.Generated
             args = new Type[]{typeof(System.String)};
             method = type.GetMethod("set_name", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, set_name_2);
+            args = new Type[]{};
+            method = type.GetMethod("get_name", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, get_name_3);
 
 
         }
@@ -86,6 +89,21 @@ namespace ILRuntime.Runtime.Generated
             instance_of_this_method.name = value;
 
             return __ret;
+        }
+
+        static StackObject* get_name_3(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        {
+            ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
+            StackObject* ptr_of_this_method;
+            StackObject* __ret = ILIntepreter.Minus(__esp, 1);
+
+            ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
+            UnityEngine.Object instance_of_this_method = (UnityEngine.Object)typeof(UnityEngine.Object).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+            __intp.Free(ptr_of_this_method);
+
+            var result_of_this_method = instance_of_this_method.name;
+
+            return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
 
 

@@ -25,10 +25,12 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_List_1_List_1_ILTypeInstance_Binding.Register(app);
             UnityEngine_Transform_Binding.Register(app);
             UnityEngine_Vector3_Binding.Register(app);
+            UnityTriggerHelper_Binding.Register(app);
+            UnityEngine_Collision_Binding.Register(app);
+            UnityEngine_Debug_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_ILTypeInstance_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_Int32_Binding.Register(app);
             LitJson_JsonMapper_Binding.Register(app);
-            UnityEngine_Debug_Binding.Register(app);
             System_Diagnostics_Stopwatch_Binding.Register(app);
             System_String_Binding.Register(app);
             System_Boolean_Binding.Register(app);

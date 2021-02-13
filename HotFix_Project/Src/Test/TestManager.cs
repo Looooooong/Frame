@@ -11,10 +11,16 @@ namespace HotFix_Project
     {
         public void Test()
         {
-            GameObject go = new GameObject();
-            go.name = "Test";
+            //GameObject go = new GameObject();
+            //go.name = "Test";
 
-            ILBehaviourManager.Instance.AddComponent<TestCom>(go);
+            //ILBehaviourManager.Instance.AddComponent<TestCom>(go);
+
+            GameObject colliderGo = new GameObject();
+            colliderGo.name = "ColliderTeset";
+            BoxCollider c = colliderGo.AddComponent<BoxCollider>();
+            
+            ILBehaviourManager.Instance.AddComponent<TestUnityEvent>(colliderGo);
         }
     }
 }
