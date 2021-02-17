@@ -104,14 +104,18 @@ public class HotFixILManager : MonoBehaviour
         
         // 注册委托
         RegistDelegate();
-
-        //初始化CLR绑定
-        CLRBindings.Initialize(appdomain);
+        
+        //注册值类型绑定
+        RegisterValueType();
 
         // 注册适配器
-        
 
+        //LitJson进行注册
         LitJson.JsonMapper.RegisterILRuntimeCLRRedirection(appdomain);
+        
+        //初始化CLR绑定请放在初始化的最后一步！！
+        //请在生成了绑定代码后解除下面这行的注释
+        CLRBindings.Initialize(appdomain);
     }
 
     void OnHotFixLoaded()
@@ -152,6 +156,13 @@ public class HotFixILManager : MonoBehaviour
             });
         });
 
+    }
+
+    void RegisterValueType()
+    {
+        appdomain.RegisterValueTypeBinder(typeof(Vector3), new Vector3Binder());
+        appdomain.RegisterValueTypeBinder(typeof(Quaternion), new QuaternionBinder());
+        appdomain.RegisterValueTypeBinder(typeof(Vector2), new Vector2Binder());
     }
 
     private void Update()
