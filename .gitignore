@@ -1,0 +1,38 @@
+# Object files
+*.o
+*.ko
+#*.obj
+*.elf
+# Libraries
+#*.lib
+#*.a
+# Shared objects (inc. Windows DLLs)
+#*.dll
+#*.so
+#*.so.*
+#*.dylib
+# Executables
+#*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+#self
+/Library/*
+/.idea/*
+/Temp/*
+/obj/*
+log.txt
+*.apk
+/*.csproj
+*.sln
+*.ruleset
+/.svn/
+/.vs/
+/.vscode/
+/EXE/
+*.keystore
+Assets/Plugins/Editor/JetBrains/JetBrains.Rider.Unity.Editor.Plugin.Repacked.dll
+Assets/Plugins/Editor/JetBrains.meta
+Assets/Plugins/Editor/JetBrains/JetBrains.Rider.Unity.Editor.Plugin.Repacked.dll.meta
