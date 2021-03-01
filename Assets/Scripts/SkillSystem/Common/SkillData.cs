@@ -104,6 +104,4 @@ public class SkillData
     /// </summary>
     public SelectorType selectorType;
 
-
-
 }

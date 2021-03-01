@@ -65,8 +65,8 @@ public class ConfigDataBase
             fileName = obj.getFilePath();
         }
         // string 
-
-        string getString = Resources.Load<TextAsset>("GameConfig/" + fileName).text;
+        Debug.Log(fileName);
+        string getString = Resources.Load<TextAsset>("Configs/" + fileName).text;
         //string getString = resource_manager.load_csv(fileName).text;
 
         CsvReaderByString csr = new CsvReaderByString(getString);

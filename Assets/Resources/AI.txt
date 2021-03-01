@@ -1,0 +1,9 @@
+[Idle]
+NoHealth>Dead
+
+[Dead]
+
+[Pursuit]
+NoHealth>Dead
+ReachTarget>Attacking
+LoseTarget>Default
