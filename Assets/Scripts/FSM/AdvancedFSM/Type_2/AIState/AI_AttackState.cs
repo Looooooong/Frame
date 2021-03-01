@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AI_AttackState : StateBase<AIContrl>
 {
-    public AI_AttackState(int id, AIContrl o) : base(id,o)
+    public AI_AttackState(int id,AIContrl o) : base(id,o)
     {
     }
 
