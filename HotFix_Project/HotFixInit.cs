@@ -11,6 +11,7 @@ namespace HotFix_Project
 
             ILBehaviourManager.Instance.Init();
 
+
             TestManager t = new TestManager();
 
             t.Test();

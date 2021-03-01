@@ -42,6 +42,7 @@ public class HotFixILManager : MonoBehaviour
     void Start()
     {
         StartCoroutine(LoadHotFixAssembly());
+
     }
 
     IEnumerator LoadHotFixAssembly()
@@ -150,6 +151,8 @@ public class HotFixILManager : MonoBehaviour
         manager.RegisterMethodDelegate<short>();
         manager.RegisterMethodDelegate<ushort>();
         manager.RegisterMethodDelegate<int>();
+        manager.RegisterMethodDelegate<int,int>();
+        manager.RegisterMethodDelegate<int, int,int>();
         manager.RegisterMethodDelegate<uint>();
         manager.RegisterMethodDelegate<long>();
         manager.RegisterMethodDelegate<ulong>();
