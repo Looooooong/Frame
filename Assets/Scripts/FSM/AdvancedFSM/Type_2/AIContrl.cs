@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// 挂载在AI上，控制AI的状态机
 /// </summary>
-public class AICotrl : MonoBehaviour
+public class AIContrl : MonoBehaviour
 {
 
     public enum AIState : int
@@ -21,7 +21,7 @@ public class AICotrl : MonoBehaviour
 
     public AIState state = AIState.None;
 
-    public StateMachine<AICotrl> machine;
+    public StateMachine<AIContrl> machine;
 
     private void Start()
     {
@@ -31,7 +31,7 @@ public class AICotrl : MonoBehaviour
         RunState_AI run = new RunState_AI((int)AIState.Run, this);
         AI_AttackState attack = new AI_AttackState((int)AIState.Attack, this);
 
-        machine = new StateMachine<AICotrl>(idle);
+        machine = new StateMachine<AIContrl>(idle);
         machine.AddState(run);
         machine.AddState(attack);
 

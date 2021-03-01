@@ -1,7 +1,7 @@
 ﻿
-public class IdleState_AI : StateBase<AICotrl>
+public class IdleState_AI : StateBase<AIContrl>
 {
-    public IdleState_AI(int id,AICotrl o) : base(id, o)
+    public IdleState_AI(int id,AIContrl o) : base(id, o)
     {
 
     }
