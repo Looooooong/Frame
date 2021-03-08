@@ -1,10 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 
-public delegate void PointerEventHandler(PointerEventData eventData);
 
 /// <summary>
 /// UI事件监听类: 管理所有UGUI事件,提供事件参数
@@ -13,9 +13,9 @@ public delegate void PointerEventHandler(PointerEventData eventData);
 /// </summary>
 public class UIEventListener : MonoBehaviour,IPointerClickHandler,IPointerDownHandler,IPointerUpHandler
 {
-    public event PointerEventHandler PointerClick;
-    public event PointerEventHandler PointerUp;
-    public event PointerEventHandler PointerDown;
+    public Action<PointerEventData> PointerClick;
+    public Action<PointerEventData> PointerUp;
+    public Action<PointerEventData> PointerDown;
 
 
 
