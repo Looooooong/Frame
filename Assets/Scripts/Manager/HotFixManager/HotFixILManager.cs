@@ -42,6 +42,7 @@ public class HotFixILManager : MonoBehaviour
     void Start()
     {
         StartCoroutine(LoadHotFixAssembly());
+
     }
 
     IEnumerator LoadHotFixAssembly()
@@ -56,9 +57,20 @@ public class HotFixILManager : MonoBehaviour
         //工程目录在Assets\Samples\ILRuntime\1.6\Demo\HotFix_Project~
         //以下加载写法只为演示，并没有处理在编辑器切换到Android平台的读取，需要自行修改
 #if UNITY_ANDROID
-        WWW www = new WWW(Application.streamingAssetsPath + "/HotFix_Project.dll");
+        WWW download = new WWW("http://192.168.50.226:8000/remote/" + "/HotFix_Project.dll");
+        yield return download;
+        File.WriteAllBytes(Application.persistentDataPath + "/HotFix_Project.dll", download.bytes);
+        download.Dispose();
+
+        WWW www = new WWW("file:///" + Application.persistentDataPath + "/HotFix_Project.dll");
 #else
-        WWW www = new WWW("file:///" + Application.streamingAssetsPath + "/HotFix_Project.dll");
+        //WWW www = new WWW("file:///" + Application.streamingAssetsPath + "/HotFix_Project.dll");
+        var downloadRequest = AssetBundleManager.Instance.DownloadAssetBundleAsync("HotFix_Project.dll");
+        yield return downloadRequest;
+        GameUtility.SafeWriteAllBytes(AssetBundleUtility.GetPersistentDataPath() + "/HotFix_Project.dll", downloadRequest.bytes);
+        downloadRequest.Dispose();
+
+        WWW www = new WWW("file:///" + AssetBundleUtility.GetPersistentDataPath() + "/HotFix_Project.dll");
 #endif
         while (!www.isDone)
             yield return null;
@@ -68,6 +80,7 @@ public class HotFixILManager : MonoBehaviour
         www.Dispose();
 
         //PDB文件是调试数据库，如需要在日志中显示报错的行号，则必须提供PDB文件，不过由于会额外耗用内存，正式发布时请将PDB去掉，下面LoadAssembly的时候pdb传null即可
+        /*
 #if UNITY_ANDROID
         www = new WWW(Application.streamingAssetsPath + "/HotFix_Project.pdb");
 #else
@@ -78,11 +91,13 @@ public class HotFixILManager : MonoBehaviour
         if (!string.IsNullOrEmpty(www.error))
             UnityEngine.Debug.LogError(www.error);
         byte[] pdb = www.bytes;
+        */
         fs = new MemoryStream(dll);
-        p = new MemoryStream(pdb);
+        //p = new MemoryStream(pdb);
         try
         {
-            appdomain.LoadAssembly(fs, p, new ILRuntime.Mono.Cecil.Pdb.PdbReaderProvider());
+            //appdomain.LoadAssembly(fs, p, new ILRuntime.Mono.Cecil.Pdb.PdbReaderProvider());
+            appdomain.LoadAssembly(fs, null, new ILRuntime.Mono.Cecil.Pdb.PdbReaderProvider());
         }
         catch
         {
@@ -136,6 +151,8 @@ public class HotFixILManager : MonoBehaviour
         manager.RegisterMethodDelegate<short>();
         manager.RegisterMethodDelegate<ushort>();
         manager.RegisterMethodDelegate<int>();
+        manager.RegisterMethodDelegate<int,int>();
+        manager.RegisterMethodDelegate<int, int,int>();
         manager.RegisterMethodDelegate<uint>();
         manager.RegisterMethodDelegate<long>();
         manager.RegisterMethodDelegate<ulong>();

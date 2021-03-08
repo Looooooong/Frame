@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
 public class EventManager : MonoBehaviour
 {
 
@@ -15,15 +17,15 @@ public class EventManager : MonoBehaviour
     /// 在添加事件时,校验事件的合法性
     /// </summary>
     /// <param name="eType">事件类型</param>
-    /// <param name="callBack">对应的事件委托</param>
-    private static void CheckEventWhenAdding(MG_EventType eType, Delegate callBack)
+    /// <param name="Action">对应的事件委托</param>
+    private static void CheckEventWhenAdding(MG_EventType eType, Delegate Action)
     {
         if (!m_ListenersDic.ContainsKey(eType))
         {
             m_ListenersDic.Add(eType, null);
         }
         Delegate tempD = m_ListenersDic[eType];
-        if (tempD != null && tempD.GetType() != callBack.GetType())
+        if (tempD != null && tempD.GetType() != Action.GetType())
         {
             throw new Exception(string.Format("error"));
         }
@@ -33,8 +35,8 @@ public class EventManager : MonoBehaviour
     /// 移除事件时,校验事件的合法性
     /// </summary>
     /// <param name="eType">事件类型</param>
-    /// <param name="callBack">对应的事件委托</param>
-    private static void CheckEventWhenRemoving(MG_EventType eType, Delegate callBack)
+    /// <param name="Action">对应的事件委托</param>
+    private static void CheckEventWhenRemoving(MG_EventType eType, Delegate Action)
     {
         if (!m_ListenersDic.ContainsKey(eType))
         {
@@ -45,9 +47,9 @@ public class EventManager : MonoBehaviour
         {
             throw new Exception(string.Format("移除监听事件错误,该事件类型{0}中未注册对应的事件.", eType));
         }
-        else if (tempD.GetType() != callBack.GetType())
+        else if (tempD.GetType() != Action.GetType())
         {
-            throw new Exception(string.Format("移除监听事件错误,移除的事件类型{0}和当前类型事件类型不一致{1}", callBack.GetType(), tempD.GetType()));
+            throw new Exception(string.Format("移除监听事件错误,移除的事件类型{0}和当前类型事件类型不一致{1}", Action.GetType(), tempD.GetType()));
         }
     }
 
@@ -56,23 +58,23 @@ public class EventManager : MonoBehaviour
     /// 添加事件（0个参数事件）
     /// </summary>
     /// <param name="eType">事件类型</param>
-    /// <param name="callBack">对应事件委托</param>
-    public static void AddEvent(MG_EventType eType, CallBack callBack)
+    /// <param name="Action">对应事件委托</param>
+    public static void AddEvent(MG_EventType eType, Action Action)
     {
-        CheckEventWhenAdding(eType, callBack);
-        m_ListenersDic[eType] = (CallBack)m_ListenersDic[eType] + callBack;
+        CheckEventWhenAdding(eType, Action);
+        m_ListenersDic[eType] = (Action)m_ListenersDic[eType] + Action;
     }
-    
+
 
     /// <summary>
     /// 添加事件（1个参数事件）
     /// </summary>
     /// <param name="eType">事件类型</param>
-    /// <param name="callBack">对应事件委托</param>
-    public static void AddEvent<T>(MG_EventType eType, CallBack<T> callBack)
+    /// <param name="Action">对应事件委托</param>
+    public static void AddEvent<T>(MG_EventType eType, Action<T> Action)
     {
-        CheckEventWhenAdding(eType, callBack);
-        m_ListenersDic[eType] = (CallBack<T>)m_ListenersDic[eType] + callBack;
+        CheckEventWhenAdding(eType, Action);
+        m_ListenersDic[eType] = (Action<T>)m_ListenersDic[eType] + Action;
     }
 
 
@@ -80,11 +82,11 @@ public class EventManager : MonoBehaviour
     /// 添加事件（2个参数事件）
     /// </summary>
     /// <param name="eType">事件类型</param>
-    /// <param name="callBack">对应事件委托</param>
-    public static void AddEvent<T, X>(MG_EventType eType, CallBack<T, X> callBack)
+    /// <param name="Action">对应事件委托</param>
+    public static void AddEvent<T, X>(MG_EventType eType, Action<T, X> Action)
     {
-        CheckEventWhenAdding(eType, callBack);
-        m_ListenersDic[eType] = (CallBack<T, X>)m_ListenersDic[eType] + callBack;
+        CheckEventWhenAdding(eType, Action);
+        m_ListenersDic[eType] = (Action<T, X>)m_ListenersDic[eType] + Action;
     }
 
 
@@ -92,11 +94,11 @@ public class EventManager : MonoBehaviour
     /// 添加事件（3个参数事件）
     /// </summary>
     /// <param name="eType">事件类型</param>
-    /// <param name="callBack">对应事件委托</param>
-    public static void AddEvent<T, X, Y>(MG_EventType eType, CallBack<T, X, Y> callBack)
+    /// <param name="Action">对应事件委托</param>
+    public static void AddEvent<T, X, Y>(MG_EventType eType, Action<T, X, Y> Action)
     {
-        CheckEventWhenAdding(eType, callBack);
-        m_ListenersDic[eType] = (CallBack<T, X, Y>)m_ListenersDic[eType] + callBack;
+        CheckEventWhenAdding(eType, Action);
+        m_ListenersDic[eType] = (Action<T, X, Y>)m_ListenersDic[eType] + Action;
     }
 
 
@@ -104,11 +106,11 @@ public class EventManager : MonoBehaviour
     /// 移除事件（0个参数事件）
     /// </summary>
     /// <param name="eType">事件类型</param>
-    /// <param name="callBack">对应事件委托</param>
-    public static void RemoveEvent(MG_EventType eType, CallBack callBack)
+    /// <param name="Action">对应事件委托</param>
+    public static void RemoveEvent(MG_EventType eType, Action Action)
     {
-        CheckEventWhenRemoving(eType, callBack);
-        m_ListenersDic[eType] = (CallBack)m_ListenersDic[eType] - callBack;
+        CheckEventWhenRemoving(eType, Action);
+        m_ListenersDic[eType] = (Action)m_ListenersDic[eType] - Action;
         if (m_ListenersDic[eType] == null)
         {
             m_ListenersDic.Remove(eType);
@@ -120,11 +122,11 @@ public class EventManager : MonoBehaviour
     /// 移除事件（1个参数事件）
     /// </summary>
     /// <param name="eType">事件类型</param>
-    /// <param name="callBack">对应事件委托</param>
-    public static void RemoveEvent<T>(MG_EventType eType, CallBack<T> callBack)
+    /// <param name="Action">对应事件委托</param>
+    public static void RemoveEvent<T>(MG_EventType eType, Action<T> Action)
     {
-        CheckEventWhenRemoving(eType, callBack);
-        m_ListenersDic[eType] = (CallBack<T>)m_ListenersDic[eType] - callBack;
+        CheckEventWhenRemoving(eType, Action);
+        m_ListenersDic[eType] = (Action<T>)m_ListenersDic[eType] - Action;
         if (m_ListenersDic[eType] == null)
         {
             m_ListenersDic.Remove(eType);
@@ -136,11 +138,11 @@ public class EventManager : MonoBehaviour
     /// 移除事件（2个参数事件）
     /// </summary>
     /// <param name="eType">事件类型</param>
-    /// <param name="callBack">对应事件委托</param>
-    public static void RemoveEvent<T, X>(MG_EventType eType, CallBack<T, X> callBack)
+    /// <param name="Action">对应事件委托</param>
+    public static void RemoveEvent<T, X>(MG_EventType eType, Action<T, X> Action)
     {
-        CheckEventWhenRemoving(eType, callBack);
-        m_ListenersDic[eType] = (CallBack<T, X>)m_ListenersDic[eType] - callBack;
+        CheckEventWhenRemoving(eType, Action);
+        m_ListenersDic[eType] = (Action<T, X>)m_ListenersDic[eType] - Action;
         if (m_ListenersDic[eType] == null)
         {
             m_ListenersDic.Remove(eType);
@@ -152,11 +154,11 @@ public class EventManager : MonoBehaviour
     /// 移除事件（3个参数事件）
     /// </summary>
     /// <param name="eType">事件类型</param>
-    /// <param name="callBack">对应事件委托</param>
-    public static void RemoveEvent<T, X, Y>(MG_EventType eType, CallBack<T, X, Y> callBack)
+    /// <param name="Action">对应事件委托</param>
+    public static void RemoveEvent<T, X, Y>(MG_EventType eType, Action<T, X, Y> Action)
     {
-        CheckEventWhenRemoving(eType, callBack);
-        m_ListenersDic[eType] = (CallBack<T, X, Y>)m_ListenersDic[eType] - callBack;
+        CheckEventWhenRemoving(eType, Action);
+        m_ListenersDic[eType] = (Action<T, X, Y>)m_ListenersDic[eType] - Action;
         if (m_ListenersDic[eType] == null)
         {
             m_ListenersDic.Remove(eType);
@@ -173,10 +175,10 @@ public class EventManager : MonoBehaviour
         Delegate tempD;
         if (m_ListenersDic.TryGetValue(eType, out tempD))
         {
-            CallBack callBack = tempD as CallBack;
-            if (callBack != null)
+            Action Action = tempD as Action;
+            if (Action != null)
             {
-                callBack();
+                Action();
             }
             else
             {
@@ -198,10 +200,10 @@ public class EventManager : MonoBehaviour
         Delegate tempD;
         if (m_ListenersDic.TryGetValue(eType, out tempD))
         {
-            CallBack<T> callBack = tempD as CallBack<T>;
-            if (callBack != null)
+            Action<T> Action = tempD as Action<T>;
+            if (Action != null)
             {
-                callBack(arg0);
+                Action(arg0);
             }
             else
             {
@@ -224,10 +226,10 @@ public class EventManager : MonoBehaviour
         Delegate tempD;
         if (m_ListenersDic.TryGetValue(eType, out tempD))
         {
-            CallBack<T, X> callBack = tempD as CallBack<T, X>;
-            if (callBack != null)
+            Action<T, X> Action = tempD as Action<T, X>;
+            if (Action != null)
             {
-                callBack(arg0, arg1);
+                Action(arg0, arg1);
             }
             else
             {
@@ -250,10 +252,10 @@ public class EventManager : MonoBehaviour
         Delegate tempD;
         if (m_ListenersDic.TryGetValue(eType, out tempD))
         {
-            CallBack<T, X, Y> callBack = tempD as CallBack<T, X, Y>;
-            if (callBack != null)
+            Action<T, X, Y> Action = tempD as Action<T, X, Y>;
+            if (Action != null)
             {
-                callBack(arg0, arg1, arg2);
+                Action(arg0, arg1, arg2);
             }
             else
             {
@@ -268,3 +270,5 @@ public class EventManager : MonoBehaviour
 
 
 }
+
+
