@@ -30,6 +30,7 @@ log.txt
 *.ruleset
 /.svn/
 /.vs/
+/HotFix_Project/.vs/
 /.vscode/
 .vsconfig
 /EXE/
