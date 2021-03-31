@@ -52,6 +52,10 @@
       <HintPath>UnityDlls\UnityEngine.UIModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>UnityDlls\UnityEngine.UI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="UnityEngine.PhysicsModule">
       <HintPath>UnityDlls\UnityEngine.PhysicsModule.dll</HintPath>
       <Private>False</Private>
@@ -62,9 +66,14 @@
     <Compile Include="Src\Behaviour\ILBehaviour.cs" />
     <Compile Include="Src\Manager\EventManager\EventManager.cs" />
     <Compile Include="Src\Manager\ILBehaviourManager.cs" />
+    <Compile Include="Src\Manager\Singleton.cs" />
+    <Compile Include="Src\Manager\UIManager\UIManager.cs" />
     <Compile Include="Src\Test\TestCom.cs" />
     <Compile Include="Src\Test\TestManager.cs" />
     <Compile Include="Src\Test\TestUnityEvent.cs" />
+    <Compile Include="Src\UI\UIEventListener.cs" />
+    <Compile Include="Src\UI\UIWindow.cs" />
+    <Compile Include="Src\UI\GameUI\TestUI.cs" />
     <Compile Include="TestJson.cs" />
     <Compile Include="TestValueType.cs" />
     <Compile Include="TestMonoBehaviour.cs" />

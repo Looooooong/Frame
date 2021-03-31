@@ -107,7 +107,7 @@ namespace HotFix_Project
             return null;
         }
 
-
+        #region Update
 
         public void Update()
         {
@@ -169,6 +169,9 @@ namespace HotFix_Project
                 }
             }
         }
+
+        #endregion
+
 
     }
 }
