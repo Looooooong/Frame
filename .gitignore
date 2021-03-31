@@ -32,6 +32,7 @@ log.txt
 /.vs/
 */.vs/
 */obj/
+*.vsconfig
 /.vscode/
 .vsconfig
 /EXE/
