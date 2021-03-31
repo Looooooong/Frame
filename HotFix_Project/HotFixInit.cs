@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using Main;
+
 namespace HotFix_Project
 {
     public class HotFixInit

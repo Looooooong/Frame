@@ -1,11 +1,14 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-public enum SelectorType 
-{
-    Sector,
-    Circle,
-    Rect,
+namespace Main 
+{	
+	
+	public enum SelectorType 
+	{
+	    Sector,
+	    Circle,
+	    Rect,
+	}
 }

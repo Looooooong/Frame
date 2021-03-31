@@ -14,7 +14,7 @@ using ILRuntime.CLR.Utils;
 
 namespace ILRuntime.Runtime.Generated
 {
-    unsafe class HotFixILManager_Binding
+    unsafe class Main_HotFixILManager_Binding
     {
         public static void Register(ILRuntime.Runtime.Enviorment.AppDomain app)
         {
@@ -22,7 +22,7 @@ namespace ILRuntime.Runtime.Generated
             MethodBase method;
             FieldInfo field;
             Type[] args;
-            Type type = typeof(global::HotFixILManager);
+            Type type = typeof(Main.HotFixILManager);
             args = new Type[]{};
             method = type.GetMethod("get_Instance", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, get_Instance_0);
@@ -50,7 +50,7 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 0);
 
 
-            var result_of_this_method = global::HotFixILManager.Instance;
+            var result_of_this_method = Main.HotFixILManager.Instance;
 
             object obj_result_of_this_method = result_of_this_method;
             if(obj_result_of_this_method is CrossBindingAdaptorType)
@@ -63,73 +63,73 @@ namespace ILRuntime.Runtime.Generated
 
         static object get_UpdateEventHandler_0(ref object o)
         {
-            return ((global::HotFixILManager)o).UpdateEventHandler;
+            return ((Main.HotFixILManager)o).UpdateEventHandler;
         }
 
         static StackObject* CopyToStack_UpdateEventHandler_0(ref object o, ILIntepreter __intp, StackObject* __ret, IList<object> __mStack)
         {
-            var result_of_this_method = ((global::HotFixILManager)o).UpdateEventHandler;
+            var result_of_this_method = ((Main.HotFixILManager)o).UpdateEventHandler;
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
 
         static void set_UpdateEventHandler_0(ref object o, object v)
         {
-            ((global::HotFixILManager)o).UpdateEventHandler = (System.Action)v;
+            ((Main.HotFixILManager)o).UpdateEventHandler = (System.Action)v;
         }
 
         static StackObject* AssignFromStack_UpdateEventHandler_0(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             System.Action @UpdateEventHandler = (System.Action)typeof(System.Action).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
-            ((global::HotFixILManager)o).UpdateEventHandler = @UpdateEventHandler;
+            ((Main.HotFixILManager)o).UpdateEventHandler = @UpdateEventHandler;
             return ptr_of_this_method;
         }
 
         static object get_LateUpdateEventHandler_1(ref object o)
         {
-            return ((global::HotFixILManager)o).LateUpdateEventHandler;
+            return ((Main.HotFixILManager)o).LateUpdateEventHandler;
         }
 
         static StackObject* CopyToStack_LateUpdateEventHandler_1(ref object o, ILIntepreter __intp, StackObject* __ret, IList<object> __mStack)
         {
-            var result_of_this_method = ((global::HotFixILManager)o).LateUpdateEventHandler;
+            var result_of_this_method = ((Main.HotFixILManager)o).LateUpdateEventHandler;
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
 
         static void set_LateUpdateEventHandler_1(ref object o, object v)
         {
-            ((global::HotFixILManager)o).LateUpdateEventHandler = (System.Action)v;
+            ((Main.HotFixILManager)o).LateUpdateEventHandler = (System.Action)v;
         }
 
         static StackObject* AssignFromStack_LateUpdateEventHandler_1(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             System.Action @LateUpdateEventHandler = (System.Action)typeof(System.Action).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
-            ((global::HotFixILManager)o).LateUpdateEventHandler = @LateUpdateEventHandler;
+            ((Main.HotFixILManager)o).LateUpdateEventHandler = @LateUpdateEventHandler;
             return ptr_of_this_method;
         }
 
         static object get_FixedUpdateEventHandler_2(ref object o)
         {
-            return ((global::HotFixILManager)o).FixedUpdateEventHandler;
+            return ((Main.HotFixILManager)o).FixedUpdateEventHandler;
         }
 
         static StackObject* CopyToStack_FixedUpdateEventHandler_2(ref object o, ILIntepreter __intp, StackObject* __ret, IList<object> __mStack)
         {
-            var result_of_this_method = ((global::HotFixILManager)o).FixedUpdateEventHandler;
+            var result_of_this_method = ((Main.HotFixILManager)o).FixedUpdateEventHandler;
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
 
         static void set_FixedUpdateEventHandler_2(ref object o, object v)
         {
-            ((global::HotFixILManager)o).FixedUpdateEventHandler = (System.Action)v;
+            ((Main.HotFixILManager)o).FixedUpdateEventHandler = (System.Action)v;
         }
 
         static StackObject* AssignFromStack_FixedUpdateEventHandler_2(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             System.Action @FixedUpdateEventHandler = (System.Action)typeof(System.Action).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
-            ((global::HotFixILManager)o).FixedUpdateEventHandler = @FixedUpdateEventHandler;
+            ((Main.HotFixILManager)o).FixedUpdateEventHandler = @FixedUpdateEventHandler;
             return ptr_of_this_method;
         }
 

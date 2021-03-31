@@ -14,14 +14,14 @@ using ILRuntime.CLR.Utils;
 
 namespace ILRuntime.Runtime.Generated
 {
-    unsafe class UnityTriggerHelper_Binding
+    unsafe class Main_UnityTriggerHelper_Binding
     {
         public static void Register(ILRuntime.Runtime.Enviorment.AppDomain app)
         {
             BindingFlags flag = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;
             FieldInfo field;
             Type[] args;
-            Type type = typeof(global::UnityTriggerHelper);
+            Type type = typeof(Main.UnityTriggerHelper);
 
             field = type.GetField("OnCollisionEnterEventHandler", flag);
             app.RegisterCLRFieldGetter(field, get_OnCollisionEnterEventHandler_0);
@@ -35,25 +35,25 @@ namespace ILRuntime.Runtime.Generated
 
         static object get_OnCollisionEnterEventHandler_0(ref object o)
         {
-            return ((global::UnityTriggerHelper)o).OnCollisionEnterEventHandler;
+            return ((Main.UnityTriggerHelper)o).OnCollisionEnterEventHandler;
         }
 
         static StackObject* CopyToStack_OnCollisionEnterEventHandler_0(ref object o, ILIntepreter __intp, StackObject* __ret, IList<object> __mStack)
         {
-            var result_of_this_method = ((global::UnityTriggerHelper)o).OnCollisionEnterEventHandler;
+            var result_of_this_method = ((Main.UnityTriggerHelper)o).OnCollisionEnterEventHandler;
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
 
         static void set_OnCollisionEnterEventHandler_0(ref object o, object v)
         {
-            ((global::UnityTriggerHelper)o).OnCollisionEnterEventHandler = (System.Action<UnityEngine.Collision>)v;
+            ((Main.UnityTriggerHelper)o).OnCollisionEnterEventHandler = (System.Action<UnityEngine.Collision>)v;
         }
 
         static StackObject* AssignFromStack_OnCollisionEnterEventHandler_0(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             System.Action<UnityEngine.Collision> @OnCollisionEnterEventHandler = (System.Action<UnityEngine.Collision>)typeof(System.Action<UnityEngine.Collision>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
-            ((global::UnityTriggerHelper)o).OnCollisionEnterEventHandler = @OnCollisionEnterEventHandler;
+            ((Main.UnityTriggerHelper)o).OnCollisionEnterEventHandler = @OnCollisionEnterEventHandler;
             return ptr_of_this_method;
         }
 

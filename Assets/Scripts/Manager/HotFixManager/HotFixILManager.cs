@@ -1,4 +1,4 @@
-﻿using ILRuntime.Runtime.Enviorment;
+using ILRuntime.Runtime.Enviorment;
 using System;
 using System.Collections;
 using System.IO;
@@ -10,249 +10,252 @@ using System.Collections.Generic;
 using ILRuntime.CLR.Method;
 using ILRuntime.CLR.Utils;
 
-//下面这行为了取消使用WWW的警告，Unity2018以后推荐使用UnityWebRequest，处于兼容性考虑Demo依然使用WWW
+namespace Main 
+{	
+	//下面这行为了取消使用WWW的警告，Unity2018以后推荐使用UnityWebRequest，处于兼容性考虑Demo依然使用WWW
 #pragma warning disable CS0618
-public class HotFixILManager : MonoBehaviour
-{
-    private static HotFixILManager instance;
-    public static HotFixILManager Instance
-    {
-        get
-        {
-            return instance;
-        }
-    }
-
-    public Action UpdateEventHandler;
-    public Action FixedUpdateEventHandler;
-    public Action LateUpdateEventHandler;
-
-
-    //AppDomain是ILRuntime的入口，最好是在一个单例类中保存，整个游戏全局就一个，这里为了示例方便，每个例子里面都单独做了一个
-    //大家在正式项目中请全局只创建一个AppDomain
-    private ILRuntime.Runtime.Enviorment.AppDomain appdomain;
-    private System.IO.MemoryStream fs;
-    private System.IO.MemoryStream p;
-
-    private IStaticMethod start;
-
-    private void Awake()
-    {
-        instance = this;
-    }
-
-
-    void Start()
-    {
-        StartCoroutine(LoadHotFixAssembly());
-
-    }
-
-    IEnumerator LoadHotFixAssembly()
-    {
-        //首先实例化ILRuntime的AppDomain，AppDomain是一个应用程序域，每个AppDomain都是一个独立的沙盒
-        appdomain = new ILRuntime.Runtime.Enviorment.AppDomain();
-        //正常项目中应该是自行从其他地方下载dll，或者打包在AssetBundle中读取，平时开发以及为了演示方便直接从StreammingAssets中读取，
-        //正式发布的时候需要大家自行从其他地方读取dll
-
-        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        //这个DLL文件是直接编译HotFix_Project.sln生成的，已经在项目中设置好输出目录为StreamingAssets，在VS里直接编译即可生成到对应目录，无需手动拷贝
-        //工程目录在Assets\Samples\ILRuntime\1.6\Demo\HotFix_Project~
-        //以下加载写法只为演示，并没有处理在编辑器切换到Android平台的读取，需要自行修改
+	public class HotFixILManager : MonoBehaviour
+	{
+	    private static HotFixILManager instance;
+	    public static HotFixILManager Instance
+	    {
+	        get
+	        {
+	            return instance;
+	        }
+	    }
+	
+	    public Action UpdateEventHandler;
+	    public Action FixedUpdateEventHandler;
+	    public Action LateUpdateEventHandler;
+	
+	
+	    //AppDomain是ILRuntime的入口，最好是在一个单例类中保存，整个游戏全局就一个，这里为了示例方便，每个例子里面都单独做了一个
+	    //大家在正式项目中请全局只创建一个AppDomain
+	    private ILRuntime.Runtime.Enviorment.AppDomain appdomain;
+	    private System.IO.MemoryStream fs;
+	    private System.IO.MemoryStream p;
+	
+	    private IStaticMethod start;
+	
+	    private void Awake()
+	    {
+	        instance = this;
+	    }
+	
+	
+	    void Start()
+	    {
+	        StartCoroutine(LoadHotFixAssembly());
+	
+	    }
+	
+	    IEnumerator LoadHotFixAssembly()
+	    {
+	        //首先实例化ILRuntime的AppDomain，AppDomain是一个应用程序域，每个AppDomain都是一个独立的沙盒
+	        appdomain = new ILRuntime.Runtime.Enviorment.AppDomain();
+	        //正常项目中应该是自行从其他地方下载dll，或者打包在AssetBundle中读取，平时开发以及为了演示方便直接从StreammingAssets中读取，
+	        //正式发布的时候需要大家自行从其他地方读取dll
+	
+	        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	        //这个DLL文件是直接编译HotFix_Project.sln生成的，已经在项目中设置好输出目录为StreamingAssets，在VS里直接编译即可生成到对应目录，无需手动拷贝
+	        //工程目录在Assets\Samples\ILRuntime\1.6\Demo\HotFix_Project~
+	        //以下加载写法只为演示，并没有处理在编辑器切换到Android平台的读取，需要自行修改
 #if UNITY_ANDROID
-        WWW download = new WWW("http://192.168.50.226:8000/remote/" + "/HotFix_Project.dll");
-        yield return download;
-        File.WriteAllBytes(Application.persistentDataPath + "/HotFix_Project.dll", download.bytes);
-        download.Dispose();
-
-        WWW www = new WWW("file:///" + Application.persistentDataPath + "/HotFix_Project.dll");
+	        WWW download = new WWW("http://192.168.50.226:8000/remote/" + "/HotFix_Project.dll");
+	        yield return download;
+	        File.WriteAllBytes(Application.persistentDataPath + "/HotFix_Project.dll", download.bytes);
+	        download.Dispose();
+	
+	        WWW www = new WWW("file:///" + Application.persistentDataPath + "/HotFix_Project.dll");
 #else
-        //WWW www = new WWW("file:///" + Application.streamingAssetsPath + "/HotFix_Project.dll");
-        var downloadRequest = AssetBundleManager.Instance.DownloadAssetBundleAsync("HotFix_Project.dll");
-        yield return downloadRequest;
-        GameUtility.SafeWriteAllBytes(AssetBundleUtility.GetPersistentDataPath() + "/HotFix_Project.dll", downloadRequest.bytes);
-        downloadRequest.Dispose();
-
-        WWW www = new WWW("file:///" + AssetBundleUtility.GetPersistentDataPath() + "/HotFix_Project.dll");
+	        //WWW www = new WWW("file:///" + Application.streamingAssetsPath + "/HotFix_Project.dll");
+	        var downloadRequest = AssetBundleManager.Instance.DownloadAssetBundleAsync("HotFix_Project.dll");
+	        yield return downloadRequest;
+	        GameUtility.SafeWriteAllBytes(AssetBundleUtility.GetPersistentDataPath() + "/HotFix_Project.dll", downloadRequest.bytes);
+	        downloadRequest.Dispose();
+	
+	        WWW www = new WWW("file:///" + AssetBundleUtility.GetPersistentDataPath() + "/HotFix_Project.dll");
 #endif
-        while (!www.isDone)
-            yield return null;
-        if (!string.IsNullOrEmpty(www.error))
-            UnityEngine.Debug.LogError(www.error);
-        byte[] dll = www.bytes;
-        www.Dispose();
-
-        //PDB文件是调试数据库，如需要在日志中显示报错的行号，则必须提供PDB文件，不过由于会额外耗用内存，正式发布时请将PDB去掉，下面LoadAssembly的时候pdb传null即可
-        /*
+	        while (!www.isDone)
+	            yield return null;
+	        if (!string.IsNullOrEmpty(www.error))
+	            UnityEngine.Debug.LogError(www.error);
+	        byte[] dll = www.bytes;
+	        www.Dispose();
+	
+	        //PDB文件是调试数据库，如需要在日志中显示报错的行号，则必须提供PDB文件，不过由于会额外耗用内存，正式发布时请将PDB去掉，下面LoadAssembly的时候pdb传null即可
+	        /*
 #if UNITY_ANDROID
-        www = new WWW(Application.streamingAssetsPath + "/HotFix_Project.pdb");
+	        www = new WWW(Application.streamingAssetsPath + "/HotFix_Project.pdb");
 #else
-        www = new WWW("file:///" + Application.streamingAssetsPath + "/HotFix_Project.pdb");
+	        www = new WWW("file:///" + Application.streamingAssetsPath + "/HotFix_Project.pdb");
 #endif
-        while (!www.isDone)
-            yield return null;
-        if (!string.IsNullOrEmpty(www.error))
-            UnityEngine.Debug.LogError(www.error);
-        byte[] pdb = www.bytes;
-        */
-        fs = new MemoryStream(dll);
-        //p = new MemoryStream(pdb);
-        try
-        {
-            //appdomain.LoadAssembly(fs, p, new ILRuntime.Mono.Cecil.Pdb.PdbReaderProvider());
-            appdomain.LoadAssembly(fs, null, new ILRuntime.Mono.Cecil.Pdb.PdbReaderProvider());
-        }
-        catch
-        {
-            Debug.LogError("加载热更DLL失败，请确保已经通过VS打开Assets/Samples/ILRuntime/1.6/Demo/HotFix_Project/HotFix_Project.sln编译过热更DLL");
-        }
-
-        InitializeILRuntime();
-        OnHotFixLoaded();
-    }
-
-    void InitializeILRuntime()
-    {
+	        while (!www.isDone)
+	            yield return null;
+	        if (!string.IsNullOrEmpty(www.error))
+	            UnityEngine.Debug.LogError(www.error);
+	        byte[] pdb = www.bytes;
+	        */
+	        fs = new MemoryStream(dll);
+	        //p = new MemoryStream(pdb);
+	        try
+	        {
+	            //appdomain.LoadAssembly(fs, p, new ILRuntime.Mono.Cecil.Pdb.PdbReaderProvider());
+	            appdomain.LoadAssembly(fs, null, new ILRuntime.Mono.Cecil.Pdb.PdbReaderProvider());
+	        }
+	        catch
+	        {
+	            Debug.LogError("加载热更DLL失败，请确保已经通过VS打开Assets/Samples/ILRuntime/1.6/Demo/HotFix_Project/HotFix_Project.sln编译过热更DLL");
+	        }
+	
+	        InitializeILRuntime();
+	        OnHotFixLoaded();
+	    }
+	
+	    void InitializeILRuntime()
+	    {
 #if DEBUG && (UNITY_EDITOR || UNITY_ANDROID || UNITY_IPHONE)
-        //由于Unity的Profiler接口只允许在主线程使用，为了避免出异常，需要告诉ILRuntime主线程的线程ID才能正确将函数运行耗时报告给Profiler
-        appdomain.UnityMainThreadID = System.Threading.Thread.CurrentThread.ManagedThreadId;
+	        //由于Unity的Profiler接口只允许在主线程使用，为了避免出异常，需要告诉ILRuntime主线程的线程ID才能正确将函数运行耗时报告给Profiler
+	        appdomain.UnityMainThreadID = System.Threading.Thread.CurrentThread.ManagedThreadId;
 #endif
-        //这里做一些ILRuntime的注册
-        //跨域继承
-        RegisterCrossBindingAdaptor();
+	        //这里做一些ILRuntime的注册
+	        //跨域继承
+	        RegisterCrossBindingAdaptor();
+	
+	        // 注册重定向函数
+	        RegisterCLRMethodRedirection();
+	
+	        // 注册委托
+	        RegistDelegate();
+	        
+	        //注册值类型绑定
+	        RegisterValueType();
+	
+	        // 注册适配器
+	
+	        //LitJson进行注册
+	        LitJson.JsonMapper.RegisterILRuntimeCLRRedirection(appdomain);
 
-        // 注册重定向函数
-        RegisterCLRMethodRedirection();
-
-        // 注册委托
-        RegistDelegate();
-        
-        //注册值类型绑定
-        RegisterValueType();
-
-        // 注册适配器
-
-        //LitJson进行注册
-        LitJson.JsonMapper.RegisterILRuntimeCLRRedirection(appdomain);
-
-        //初始化CLR绑定请放在初始化的最后一步！！
-        //请在生成了绑定代码后解除下面这行的注释
-        ILRuntime.Runtime.Generated.CLRBindings.Initialize(appdomain);
-    }
-
-    void OnHotFixLoaded()
-    {
-        //热更工程初始化方法调用
-        this.start = new ILStaticMethod(this.appdomain, "HotFix_Project.HotFixInit", "Init", 0);
-        this.start.Run();
-        //appdomain.Invoke("HotFix_Project.HotFixInit", "Init", null, null);
-
-    }
-
-    void RegisterCrossBindingAdaptor()
-    {
-        appdomain.RegisterCrossBindingAdaptor(new CoroutineAdapter());
-    }
-
-    unsafe void RegisterCLRMethodRedirection()
-    {
-        var mi = typeof(Debug).GetMethod("Log", new System.Type[] { typeof(object) });
-        appdomain.RegisterCLRMethodRedirection(mi, Log_11);
-    }
-
-    //编写重定向方法对于刚接触ILRuntime的朋友可能比较困难，比较简单的方式是通过CLR绑定生成绑定代码，然后在这个基础上改，比如下面这个代码是从UnityEngine_Debug_Binding里面复制来改的
-    //如何使用CLR绑定请看相关教程和文档
-    unsafe static StackObject* Log_11(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
-    {
-        //ILRuntime的调用约定为被调用者清理堆栈，因此执行这个函数后需要将参数从堆栈清理干净，并把返回值放在栈顶，具体请看ILRuntime实现原理文档
-        ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-        StackObject* ptr_of_this_method;
-        //这个是最后方法返回后esp栈指针的值，应该返回清理完参数并指向返回值，这里是只需要返回清理完参数的值即可
-        StackObject* __ret = ILIntepreter.Minus(__esp, 1);
-        //取Log方法的参数，如果有两个参数的话，第一个参数是esp - 2,第二个参数是esp -1, 因为Mono的bug，直接-2值会错误，所以要调用ILIntepreter.Minus
-        ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-
-        //这里是将栈指针上的值转换成object，如果是基础类型可直接通过ptr->Value和ptr->ValueLow访问到值，具体请看ILRuntime实现原理文档
-        object message = typeof(object).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
-        //所有非基础类型都得调用Free来释放托管堆栈
-        __intp.Free(ptr_of_this_method);
-
-        //在真实调用Debug.Log前，我们先获取DLL内的堆栈
-        var stacktrace = __domain.DebugService.GetStackTrace(__intp);
-
-        //我们在输出信息后面加上DLL堆栈
-        UnityEngine.Debug.Log(message + "\n" + stacktrace);
-
-        return __ret;
-    }
-
-
-
-
-    void RegistDelegate()
-    {
-        DelegateManager manager = appdomain.DelegateManager;
-        manager.RegisterMethodDelegate<bool>();
-        manager.RegisterMethodDelegate<byte>();
-        manager.RegisterMethodDelegate<sbyte>();
-        manager.RegisterMethodDelegate<char>();
-        manager.RegisterMethodDelegate<short>();
-        manager.RegisterMethodDelegate<ushort>();
-        manager.RegisterMethodDelegate<int>();
-        manager.RegisterMethodDelegate<int,int>();
-        manager.RegisterMethodDelegate<int, int,int>();
-        manager.RegisterMethodDelegate<uint>();
-        manager.RegisterMethodDelegate<long>();
-        manager.RegisterMethodDelegate<ulong>();
-        manager.RegisterMethodDelegate<float>();
-        manager.RegisterMethodDelegate<double>();
-        manager.RegisterMethodDelegate<string>();
-        manager.RegisterMethodDelegate<object>();
-        manager.RegisterMethodDelegate<Collider>();
-        manager.RegisterMethodDelegate<Collision>();
-        manager.RegisterMethodDelegate<BaseEventData>();
-        manager.RegisterMethodDelegate<PointerEventData>();
-        manager.RegisterMethodDelegate<UnityEngine.Object>();
-        manager.RegisterMethodDelegate<GameObject>();
-
-        appdomain.DelegateManager.RegisterDelegateConvertor<UnityEngine.Events.UnityAction>((action) => {
-            return new UnityEngine.Events.UnityAction(() => {
-                ((System.Action)action)();
-            });
-        });
-
-    }
-
-    void RegisterValueType()
-    {
-        appdomain.RegisterValueTypeBinder(typeof(Vector3), new Vector3Binder());
-        appdomain.RegisterValueTypeBinder(typeof(Quaternion), new QuaternionBinder());
-        appdomain.RegisterValueTypeBinder(typeof(Vector2), new Vector2Binder());
-    }
-
-    private void Update()
-    {
-        UpdateEventHandler?.Invoke();
-    }
-
-    private void FixedUpdate()
-    {
-        FixedUpdateEventHandler?.Invoke();
-    }
-
-    private void LateUpdate()
-    {
-        LateUpdateEventHandler?.Invoke();
-    }
-
-    private void OnDestroy()
-    {
-        if (fs != null)
-            fs.Close();
-        if (p != null)
-            p.Close();
-        fs = null;
-        p = null;
-    }
-
+            //初始化CLR绑定请放在初始化的最后一步！！
+            //请在生成了绑定代码后解除下面这行的注释
+            ILRuntime.Runtime.Generated.CLRBindings.Initialize(appdomain);
+        }
+	
+	    void OnHotFixLoaded()
+	    {
+	        //热更工程初始化方法调用
+	        this.start = new ILStaticMethod(this.appdomain, "HotFix_Project.HotFixInit", "Init", 0);
+	        this.start.Run();
+	        //appdomain.Invoke("HotFix_Project.HotFixInit", "Init", null, null);
+	
+	    }
+	
+	    void RegisterCrossBindingAdaptor()
+	    {
+	        appdomain.RegisterCrossBindingAdaptor(new CoroutineAdapter());
+	    }
+	
+	    unsafe void RegisterCLRMethodRedirection()
+	    {
+	        var mi = typeof(Debug).GetMethod("Log", new System.Type[] { typeof(object) });
+	        appdomain.RegisterCLRMethodRedirection(mi, Log_11);
+	    }
+	
+	    //编写重定向方法对于刚接触ILRuntime的朋友可能比较困难，比较简单的方式是通过CLR绑定生成绑定代码，然后在这个基础上改，比如下面这个代码是从UnityEngine_Debug_Binding里面复制来改的
+	    //如何使用CLR绑定请看相关教程和文档
+	    unsafe static StackObject* Log_11(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+	    {
+	        //ILRuntime的调用约定为被调用者清理堆栈，因此执行这个函数后需要将参数从堆栈清理干净，并把返回值放在栈顶，具体请看ILRuntime实现原理文档
+	        ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
+	        StackObject* ptr_of_this_method;
+	        //这个是最后方法返回后esp栈指针的值，应该返回清理完参数并指向返回值，这里是只需要返回清理完参数的值即可
+	        StackObject* __ret = ILIntepreter.Minus(__esp, 1);
+	        //取Log方法的参数，如果有两个参数的话，第一个参数是esp - 2,第二个参数是esp -1, 因为Mono的bug，直接-2值会错误，所以要调用ILIntepreter.Minus
+	        ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
+	
+	        //这里是将栈指针上的值转换成object，如果是基础类型可直接通过ptr->Value和ptr->ValueLow访问到值，具体请看ILRuntime实现原理文档
+	        object message = typeof(object).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
+	        //所有非基础类型都得调用Free来释放托管堆栈
+	        __intp.Free(ptr_of_this_method);
+	
+	        //在真实调用Debug.Log前，我们先获取DLL内的堆栈
+	        var stacktrace = __domain.DebugService.GetStackTrace(__intp);
+	
+	        //我们在输出信息后面加上DLL堆栈
+	        UnityEngine.Debug.Log(message + "\n" + stacktrace);
+	
+	        return __ret;
+	    }
+	
+	
+	
+	
+	    void RegistDelegate()
+	    {
+	        DelegateManager manager = appdomain.DelegateManager;
+	        manager.RegisterMethodDelegate<bool>();
+	        manager.RegisterMethodDelegate<byte>();
+	        manager.RegisterMethodDelegate<sbyte>();
+	        manager.RegisterMethodDelegate<char>();
+	        manager.RegisterMethodDelegate<short>();
+	        manager.RegisterMethodDelegate<ushort>();
+	        manager.RegisterMethodDelegate<int>();
+	        manager.RegisterMethodDelegate<int,int>();
+	        manager.RegisterMethodDelegate<int, int,int>();
+	        manager.RegisterMethodDelegate<uint>();
+	        manager.RegisterMethodDelegate<long>();
+	        manager.RegisterMethodDelegate<ulong>();
+	        manager.RegisterMethodDelegate<float>();
+	        manager.RegisterMethodDelegate<double>();
+	        manager.RegisterMethodDelegate<string>();
+	        manager.RegisterMethodDelegate<object>();
+	        manager.RegisterMethodDelegate<Collider>();
+	        manager.RegisterMethodDelegate<Collision>();
+	        manager.RegisterMethodDelegate<BaseEventData>();
+	        manager.RegisterMethodDelegate<PointerEventData>();
+	        manager.RegisterMethodDelegate<UnityEngine.Object>();
+	        manager.RegisterMethodDelegate<GameObject>();
+	
+	        appdomain.DelegateManager.RegisterDelegateConvertor<UnityEngine.Events.UnityAction>((action) => {
+	            return new UnityEngine.Events.UnityAction(() => {
+	                ((System.Action)action)();
+	            });
+	        });
+	
+	    }
+	
+	    void RegisterValueType()
+	    {
+	        appdomain.RegisterValueTypeBinder(typeof(Vector3), new Vector3Binder());
+	        appdomain.RegisterValueTypeBinder(typeof(Quaternion), new QuaternionBinder());
+	        appdomain.RegisterValueTypeBinder(typeof(Vector2), new Vector2Binder());
+	    }
+	
+	    private void Update()
+	    {
+	        UpdateEventHandler?.Invoke();
+	    }
+	
+	    private void FixedUpdate()
+	    {
+	        FixedUpdateEventHandler?.Invoke();
+	    }
+	
+	    private void LateUpdate()
+	    {
+	        LateUpdateEventHandler?.Invoke();
+	    }
+	
+	    private void OnDestroy()
+	    {
+	        if (fs != null)
+	            fs.Close();
+	        if (p != null)
+	            p.Close();
+	        fs = null;
+	        p = null;
+	    }
+	
+	}
 }

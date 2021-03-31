@@ -1,8 +1,11 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TestUI : UIWindow
-{
-
+namespace Main 
+{	
+	public class TestUI : UIWindow
+	{
+	
+	}
 }
