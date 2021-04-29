@@ -1,0 +1,10 @@
+shader/inbuildshader.assetbundle,Shader/inbuildshader/Alpha-Diffuse.shader
+shader/inbuildshader.assetbundle,Shader/inbuildshader/AlphaTest-Diffuse.shader
+shader/inbuildshader.assetbundle,Shader/inbuildshader/Normal-Diffuse.shader
+shader/inbuildshader.assetbundle,Shader/inbuildshader/Particle Add.shader
+shader/inbuildshader.assetbundle,Shader/inbuildshader/Particle Alpha Blend.shader
+shader/inbuildshader.assetbundle,Shader/inbuildshader/Particle Standard Unlit.shader
+shader/inbuildshader.assetbundle,Shader/inbuildshader/Standard.shader
+shader/inbuildshader.assetbundle,Shader/inbuildshader/StandardSpecular.shader
+testassets/cube_mat.assetbundle,TestAssets/cube.mat
+testassets/cube_prefab.assetbundle,TestAssets/Cube.prefab
