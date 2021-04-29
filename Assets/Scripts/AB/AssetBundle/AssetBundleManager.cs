@@ -266,7 +266,7 @@ namespace AssetBundles
 
         public UnityEngine.Object GetAssetCache(string assetName)
         {
-            if(!assetsCaching.ContainsKey(assetName))
+            if(!IsAssetLoaded(assetName))
             {
                 LoadAssetBundleSync(assetName);
             }
@@ -279,7 +279,9 @@ namespace AssetBundles
         public void AddAssetCache(string assetName, UnityEngine.Object asset)
         {
             assetsCaching[assetName] = asset;
+#if UNITY_EDITOR
             Debug.Log("缓存资源 : " + assetName + " 数量 ： " + assetsCaching.Count.ToString());
+#endif
         }
 
         public void AddAssetbundleAssetsCache(string assetbundleName)

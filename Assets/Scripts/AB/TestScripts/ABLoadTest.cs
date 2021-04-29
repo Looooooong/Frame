@@ -12,19 +12,19 @@ public class ABLoadTest : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Space))
         {
 
-            ////同步加载
-            //GameObject s = ResMgr.Instance.GetAssetSync<GameObject>("TestAssets/Cube.prefab");
+            //同步加载
+            GameObject s = ResMgr.Instance.GetAssetSync<GameObject>("TestAssets/Cube.prefab");
 
-            //GameObject.Instantiate(s);
+            GameObject.Instantiate(s);
 
 
-            //异步加载缓存
-            ResMgr.Instance.GetAssetAsync("TestAssets/Cube.prefab", () =>
-            {
-                GameObject s = ResMgr.Instance.GetAssetSync<GameObject>("TestAssets/Cube.prefab");
+            ////异步加载缓存
+            //ResMgr.Instance.GetAssetAsync("TestAssets/Cube.prefab", () =>
+            //{
+            //    GameObject s = ResMgr.Instance.GetAssetSync<GameObject>("TestAssets/Cube.prefab");
 
-                GameObject.Instantiate(s);
-            });
+            //    GameObject.Instantiate(s);
+            //});
 
 
             ////异步加载不缓存
