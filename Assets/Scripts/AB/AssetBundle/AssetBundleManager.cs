@@ -282,9 +282,6 @@ namespace AssetBundles
             Debug.Log("缓存资源 : " + assetName + " 数量 ： " + assetsCaching.Count.ToString());
         }
 
-
-
-        //TODO : ab包加载资源重构,包含同步和异步，第一次加载缓存asset，后续不需要加载ab包
         public void AddAssetbundleAssetsCache(string assetbundleName)
         {
 #if UNITY_EDITOR
